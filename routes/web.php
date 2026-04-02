@@ -18,4 +18,8 @@ Route::get('/test', function () {
 Route::prefix('anggota')->group(function () {
     Route::get('/',          [AnggotaController::class, 'index']);   // GET /api/anggota
     Route::get('/search',    [AnggotaController::class, 'search']);  // GET /api/anggota/search
+    Route::post('/store',    [AnggotaController::class, 'store']);
+    Route::get('/indexAdmin',[AnggotaController::class, 'IndexAdmin']);
+    Route::delete('/{id}',   [AnggotaController::class, 'destroy']);
+    Route::put('/update/{id}',[AnggotaController::class, 'update']);
 });

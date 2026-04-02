@@ -21,6 +21,16 @@ class AnggotaController extends Controller
         ]);
     }
 
+    public function indexAdmin(): JsonResponse
+    {
+        $anggota = Anggota::orderBy('no_urut', 'asc')->get();
+
+        return response()->json([
+            'success' => true,
+            'data'    => $anggota,
+        ]);
+    }
+
         public function search(Request $request): JsonResponse
     {
         $query = Anggota::select('nrm', 'nama', 'angkatan', 'asal_sekolah', 'pendidikan');
@@ -62,7 +72,109 @@ class AnggotaController extends Controller
     }
 
     public function store(request $request): JsonResponse{
-        
+            $validated = $request->validate([
+            'no_urut'      => 'nullable|integer',
+            'nama'         => 'nullable|string|max:255',
+            'asal_sekolah' => 'nullable|string|max:255',
+            'alamat'       => 'nullable|string|max:255',
+            'email'        => 'nullable|string|max:255',
+            'no_telp'      => 'nullable|string|max:20',
+            'provinsi'     => 'nullable|string|max:255',
+            'kabupaten'    => 'nullable|string|max:255',
+            'angkatan'     => 'nullable|string|max:255',
+            'pendidikan'   => 'nullable|string|max:255',
+            'pekerjaan'    => 'nullable|string|max:255',
+        ]);
+
+        // Generate NRM otomatis
+        $provinsi  = ucwords(strtolower($validated['provinsi']));
+        $kabupaten = ucwords(strtolower($validated['kabupaten']));
+
+        // Ambil kode provinsi
+        $kodeProv = NoKodeProv::where('nama_provinsi', $provinsi)
+            ->value('kode_prov');
+
+        // Ambil kode kabupaten
+        $kodeKab = NoKodeKab::where('nama_kabupaten', $kabupaten)
+            ->value('kode_kab');
+
+        if (!$kodeProv || !$kodeKab) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Provinsi atau kabupaten tidak ditemukan',
+            ], 422);
+        }
+
+        // Generate NRM: 4 digit angkatan + 2 digit kode prov + 2 digit kode kab + 3 digit no_urut
+        $nrm = substr($validated['angkatan'], 0, 4)
+            . str_pad($kodeProv, 2, '0', STR_PAD_LEFT)
+            . str_pad($kodeKab, 2, '0', STR_PAD_LEFT)
+            . str_pad($validated['no_urut'], 3, '0', STR_PAD_LEFT);
+
+        $anggota = Anggota::create([
+            ...$validated,
+            'nrm' => $nrm,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Anggota berhasil ditambahkan',
+            'data'    => $anggota,
+        ], 201);
+    }
+
+    public function destroy(string $id): JsonResponse
+    {
+        $anggota = Anggota::find($id);
+
+        if (!$anggota) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anggota tidak ditemukan',
+            ], 404);
+        }
+
+        $anggota->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Anggota berhasil dihapus',
+        ]);
+    }
+
+    public function update(Request $request, string $id): JsonResponse
+    {
+        $anggota = Anggota::find($id);
+
+        if (!$anggota) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anggota tidak ditemukan',
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'no_urut'      => 'nullable|integer',
+            'nrm'          => 'nullable|string|unique:anggota,nrm,' . $id,
+            'nama'         => 'nullable|string|max:255',
+            'asal_sekolah' => 'nullable|string|max:255',
+            'alamat'       => 'nullable|string|max:255',
+            'email'        => 'nullable|email|max:255',
+            'no_telp'      => 'nullable|string|max:20',
+            'provinsi'     => 'nullable|string|max:255',
+            'kabupaten'    => 'nullable|string|max:255',
+            'angkatan'     => 'nullable|string|max:255',
+            'pendidikan'   => 'nullable|string|max:255',
+            'pekerjaan'    => 'nullable|string|max:255',
+        ]);
+
+        $anggota->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Anggota berhasil diupdate',
+            'data'    => $anggota,
+        ]);
     }
 
 }
