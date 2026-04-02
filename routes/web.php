@@ -18,14 +18,14 @@ Route::get('/test', function () {
 Route::prefix('anggota')->group(function () {
     Route::get('/',          [AnggotaController::class, 'index']);   // GET /api/anggota
     Route::get('/search',    [AnggotaController::class, 'search']);  // GET /api/anggota/search
-    Route::post('/store',    [AnggotaController::class, 'store']);
-    Route::get('/indexAdmin',[AnggotaController::class, 'IndexAdmin']);
-    Route::delete('/{id}',   [AnggotaController::class, 'destroy']);
-    Route::put('/update/{id}',[AnggotaController::class, 'update']);
+    Route::post('/store',    [AnggotaController::class, 'store'])->middleware(['auth:api', 'role:superadmin,admin']);
+    Route::get('/indexAdmin',[AnggotaController::class, 'IndexAdmin'])->middleware(['auth:api', 'role:superadmin,admin']);
+    Route::delete('/{id}',   [AnggotaController::class, 'destroy'])->middleware(['auth:api', 'role:superadmin,admin']);
+    Route::put('/update/{id}',[AnggotaController::class, 'update'])->middleware(['auth:api', 'role:superadmin,admin']);
 });
 
 Route::prefix('admin')->group(function(){
-    Route::get('/',          [AdminController::class, 'index']);
-    Route::post('/store',    [AdminController::class, 'store']);
-    Route::delete('/{id}', [AdminController::class, 'destroy']);
+    Route::get('/',          [AdminController::class, 'index'])->middleware(['auth:api', 'role:superadmin']);
+    Route::post('/store',    [AdminController::class, 'store'])->middleware(['auth:api', 'role:superadmin']);
+    Route::delete('/{id}', [AdminController::class, 'destroy'])->middleware(['auth:api', 'role:superadmin']);
 });

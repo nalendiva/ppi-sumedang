@@ -5,33 +5,43 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Login;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required',
+        $credentials = $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
         ]);
 
-        $user = \App\Models\Login::where('username', $request->username)->first();
-
-        if (!$user || !\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+        if (!$token = Auth::guard('api')->attempt($credentials)) {
             return response()->json([
-                'message' => 'Username atau password salah'
+                'success' => false,
+                'message' => 'Username atau password salah',
             ], 401);
         }
 
-        if (!in_array($user->role, ['superadmin', 'admin'])) {
-            return response()->json([
-                'message' => 'Akses ditolak!'
-            ], 403);
-        }
+        $user = Auth::guard('api')->user();
 
         return response()->json([
-            'message' => 'Login berhasil',
-            'data' => $user
-        ], 200);
+            'success' => true,
+            'token'   => $token,
+            'role'    => $user->role,
+        ]);
     }
+
+    public function logout(): JsonResponse
+    {
+        Auth::guard('api')->logout();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil logout',
+        ]);
+    }
+
 }

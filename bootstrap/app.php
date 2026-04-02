@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->validateCsrfTokens(except: [
+    $middleware->alias([
+        'role' => \App\Http\Middleware\RoleMiddleware::class, // ✅ ganti aliasMiddleware jadi alias
+    ]);        
+    $middleware->validateCsrfTokens(except: [
             'login',
             'anggota',
             'anggota/*',

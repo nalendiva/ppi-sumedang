@@ -10,10 +10,32 @@ use Illuminate\Http\JsonResponse;  // ✅ pastikan ini
 
 class AnggotaController extends Controller
 {
-    public function index(): JsonResponse
+
+    public function index(Request $request): JsonResponse
     {
-        $anggota = Anggota::select('nrm', 'nama', 'angkatan', 'asal_sekolah', 'pendidikan')
-            ->get();
+        $query = Anggota::select('nrm', 'nama', 'angkatan', 'asal_sekolah', 'pendidikan');
+
+        if ($request->filled('nrm')) {
+            $query->where('nrm', 'like', '%' . $request->nrm . '%');
+        }
+
+        if ($request->filled('nama')) {
+            $query->where('nama', 'like', '%' . $request->nama . '%');
+        }
+
+        if ($request->filled('angkatan')) {
+            $query->where('angkatan', $request->angkatan);
+        }
+
+        if ($request->filled('asal_sekolah')) {
+            $query->where('asal_sekolah', 'like', '%' . $request->asal_sekolah . '%');
+        }
+
+        if ($request->filled('pendidikan')) {
+            $query->where('pendidikan', 'like', '%' . $request->pendidikan . '%');
+        }
+
+        $anggota = $query->get();
 
         return response()->json([
             'success' => true,
@@ -31,7 +53,7 @@ class AnggotaController extends Controller
         ]);
     }
 
-        public function search(Request $request): JsonResponse
+    public function search(Request $request): JsonResponse
     {
         $query = Anggota::select('nrm', 'nama', 'angkatan', 'asal_sekolah', 'pendidikan');
 
@@ -75,6 +97,7 @@ class AnggotaController extends Controller
             $validated = $request->validate([
             'no_urut'      => 'nullable|integer',
             'nama'         => 'nullable|string|max:255',
+            'nrm'          => 'nullable|string|unique:anggota,nrm',
             'asal_sekolah' => 'nullable|string|max:255',
             'alamat'       => 'nullable|string|max:255',
             'email'        => 'nullable|string|max:255',
@@ -86,35 +109,27 @@ class AnggotaController extends Controller
             'pekerjaan'    => 'nullable|string|max:255',
         ]);
 
-        // Generate NRM otomatis
-        $provinsi  = ucwords(strtolower($validated['provinsi']));
-        $kabupaten = ucwords(strtolower($validated['kabupaten']));
+        if (empty($validated['nrm'])) {
+            $provinsi  = ucwords(strtolower($validated['provinsi']));
+            $kabupaten = ucwords(strtolower($validated['kabupaten']));
 
-        // Ambil kode provinsi
-        $kodeProv = NoKodeProv::where('nama_provinsi', $provinsi)
-            ->value('kode_prov');
+            $kodeProv = NoKodeProv::where('nama_provinsi', $provinsi)->value('kode_prov');
+            $kodeKab  = NoKodeKab::where('nama_kabupaten', $kabupaten)->value('kode_kab');
 
-        // Ambil kode kabupaten
-        $kodeKab = NoKodeKab::where('nama_kabupaten', $kabupaten)
-            ->value('kode_kab');
+            if (!$kodeProv || !$kodeKab) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Provinsi atau kabupaten tidak ditemukan',
+                ], 422);
+            }
 
-        if (!$kodeProv || !$kodeKab) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Provinsi atau kabupaten tidak ditemukan',
-            ], 422);
+            $validated['nrm'] = substr($validated['angkatan'], 0, 4)
+                . str_pad($kodeProv, 2, '0', STR_PAD_LEFT)
+                . str_pad($kodeKab, 2, '0', STR_PAD_LEFT)
+                . str_pad($validated['no_urut'], 3, '0', STR_PAD_LEFT);
         }
 
-        // Generate NRM: 4 digit angkatan + 2 digit kode prov + 2 digit kode kab + 3 digit no_urut
-        $nrm = substr($validated['angkatan'], 0, 4)
-            . str_pad($kodeProv, 2, '0', STR_PAD_LEFT)
-            . str_pad($kodeKab, 2, '0', STR_PAD_LEFT)
-            . str_pad($validated['no_urut'], 3, '0', STR_PAD_LEFT);
-
-        $anggota = Anggota::create([
-            ...$validated,
-            'nrm' => $nrm,
-        ]);
+        $anggota = Anggota::create($validated);
 
         return response()->json([
             'success' => true,
