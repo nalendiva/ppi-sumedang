@@ -16,6 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'login',
             'anggota',
             'anggota/*',
+            'admin',
+            'admin/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
