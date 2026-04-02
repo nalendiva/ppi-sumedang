@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Anggota;
+use App\Models\NoKodeKab;
+use App\Models\NoKodeProv;
 use Illuminate\Http\JsonResponse;  // ✅ pastikan ini
 
 class AnggotaController extends Controller
@@ -57,6 +59,10 @@ class AnggotaController extends Controller
             'success' => true,
             'data'    => $result,
         ]);
+    }
+
+    public function store(request $request): JsonResponse{
+        
     }
 
 }
