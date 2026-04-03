@@ -8,10 +8,20 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
+        api: __DIR__.'/../routes/api.php', 
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+    $middleware->alias([
+        'role' => \App\Http\Middleware\RoleMiddleware::class, // ✅ ganti aliasMiddleware jadi alias
+    ]);        
+    $middleware->validateCsrfTokens(except: [
+            'login',
+            'anggota',
+            'anggota/*',
+            'admin',
+            'admin/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
