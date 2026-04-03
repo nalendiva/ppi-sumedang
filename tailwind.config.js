@@ -7,6 +7,10 @@ export default {
                 primary: "#254D3C",
                 secondary: "#63B769",
             },
+            fontFamily: {
+                sans: ['"DM Sans"', "sans-serif"],
+                serif: ['"DM Serif Display"', "serif"],
+            },
         },
     },
     plugins: [],
