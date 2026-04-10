@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AdminController;
- 
+use App\Http\Controllers\BeritaController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,4 +29,11 @@ Route::prefix('admin')->group(function(){
     Route::get('/',          [AdminController::class, 'index'])->middleware(['auth:api', 'role:superadmin']);
     Route::post('/store',    [AdminController::class, 'store'])->middleware(['auth:api', 'role:superadmin']);
     Route::delete('/{id}', [AdminController::class, 'destroy'])->middleware(['auth:api', 'role:superadmin']);
+});
+
+Route::prefix('berita')->group(function(){
+    Route::post('/store',    [BeritaController::class, 'store']);
+    Route::delete('/{id}',   [BeritaController::class, 'destroy']);
+    Route::put('/update/{id}', [BeritaController::class, 'update']);
+
 });
