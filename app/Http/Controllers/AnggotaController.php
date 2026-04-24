@@ -55,6 +55,15 @@ class AnggotaController extends Controller
 
     public function search(Request $request): JsonResponse
     {
+        // Wajib ada minimal 1 parameter
+        if (!$request->hasAny(['nrm', 'nama', 'angkatan', 'asal_sekolah', 'pendidikan'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Minimal satu parameter pencarian harus diisi',
+                'data'    => [],
+            ], 422);
+        }
+
         $query = Anggota::select('nrm', 'nama', 'angkatan', 'asal_sekolah', 'pendidikan');
 
         if ($request->filled('nrm')) {
@@ -77,7 +86,7 @@ class AnggotaController extends Controller
             $query->where('pendidikan', 'like', '%' . $request->pendidikan . '%');
         }
 
-        $result = $query->get();
+        $result = $query->paginate(20); // tambah pagination
 
         if ($result->isEmpty()) {
             return response()->json([
@@ -89,7 +98,13 @@ class AnggotaController extends Controller
 
         return response()->json([
             'success' => true,
-            'data'    => $result,
+            'data'    => $result->items(),
+            'pagination' => [
+                'current_page' => $result->currentPage(),
+                'per_page'     => $result->perPage(),
+                'total'        => $result->total(),
+                'last_page'    => $result->lastPage(),
+            ],
         ]);
     }
 
