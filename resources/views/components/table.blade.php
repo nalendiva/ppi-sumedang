@@ -13,7 +13,7 @@
                 @endforeach
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-stone-50">
+        <tbody id="anggotaTableBody" class="bg-white divide-y divide-stone-50">
             {{ $slot }}
         </tbody>
     </table>

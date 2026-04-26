@@ -37,7 +37,7 @@
                     </div>
 
                     {{-- Form --}}
-                    <form method="#" action="#" class="space-y-5" novalidate>
+                    <form id="loginForm" method="#" class="space-y-5" novalidate>
                         @csrf
 
                         <x-input
@@ -88,6 +88,7 @@
                             Masuk
                         </x-button>
                     </form>
+                    <p id="errorMessage" class="text-red-500 text-sm mt-2"></p>
 
                     {{-- Divider --}}
                     <div class="flex items-center gap-4 my-7">
@@ -118,3 +119,50 @@
     </div>
 
 </x-layouts.app>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const username = document.querySelector('input[name="username"]').value;
+    const password = document.querySelector('input[name="password"]').value;
+    const errorEl  = document.getElementById('errorMessage');
+
+    errorEl.innerText = '';
+
+    try {
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+        formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+        const res = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json', 
+            },
+            body: formData
+        });
+
+        const data = await res.json();
+
+        if (!data.success) {
+            throw new Error(data.message || 'Login gagal');
+        }
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('role', data.role);
+
+        if (data.role === 'superadmin') {
+            window.location.href = '/page/anggota';
+        } else if (data.role === 'admin') {
+            window.location.href = '/page/berita';
+        } else {
+            window.location.href = '/';
+        }
+
+    } catch (err) {
+        errorEl.innerText = err.message;
+    }
+});
+</script>

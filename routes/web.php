@@ -6,30 +6,33 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AdminController;
 
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/admin/anggota', function () {
+    return view('pages.admin.anggota');
+})->name('admin.anggota.index');
+
+Route::get('/admin', function () {
+    return 'Dashboard sementara';
+})->name('admin.dashboard');
+
+Route::prefix('page')->group(function () {
+    Route::get('/home', fn() => view('pages.home'))->name('home');
+    Route::get('/anggota', fn() => view('pages.anggota'))->name('anggota');
+    Route::get('/berita', fn() => view('pages.berita.index'))->name('berita.index');
+    Route::get('/berita/{slug}', fn($slug) => view('pages.berita.show', compact('slug')))->name('berita.show');
+    Route::get('/profil', fn() => view('pages.profil'))->name('profil');
+    Route::get('/dokumentasi', fn() => view('pages.dokumentasi'))->name('dokumentasi');
+    Route::get('/mitra', fn() => view('pages.mitra'))->name('mitra');
+    Route::get('/login', fn() => view('pages.auth.login'))->name('login');
 });
 
-Route::get('/', fn() => view('pages.home'))->name('home');
-Route::get('/anggota', fn() => view('pages.anggota'))->name('anggota');
 
-// --- Tambahkan route berikut ---
 
-Route::get('/berita', fn() => view('pages.berita.index'))->name('berita.index');
-Route::get('/berita/{slug}', fn($slug) => view('pages.berita.show', compact('slug')))->name('berita.show');
-Route::get('/profil', fn() => view('pages.profil'))->name('profil');
-Route::get('/dokumentasi', fn() => view('pages.dokumentasi'))->name('dokumentasi');
-Route::get('/mitra', fn() => view('pages.mitra'))->name('mitra');
-
-// --- Auth ---
-Route::get('/login', fn() => view('pages.auth.login'))->name('login');
-Route::get('/register', fn() => view('pages.auth.register'))->name('register');
-Route::get('/forgot-password', fn() => view('pages.auth.forgot-password'))->name('password.request');
-Route::post('/login', fn() => back())->name('login.post');
+// Helmi
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/test', function () {
-    return 'OK';
-});
 
 Route::prefix('anggota')->group(function () {
     Route::get('/',          [AnggotaController::class, 'index']);   // GET /api/anggota
