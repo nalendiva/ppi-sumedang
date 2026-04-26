@@ -35,7 +35,7 @@
         <div class="border-t border-stone-100 bg-white/60 backdrop-blur-sm">
             <div class="max-w-7xl mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach ([
-                    ['label' => 'Total Anggota', 'value' => '248'],
+                    ['label' => 'Total Anggota', 'value' => '800+'],
                     ['label' => 'Artikel Berita', 'value' => '56'],
                     ['label' => 'Dokumentasi',    'value' => '120+'],
                     ['label' => 'Mitra Aktif',    'value' => '18'],
@@ -63,13 +63,13 @@
 
         <div class="grid md:grid-cols-3 gap-6 mt-10">
             @foreach ([
-                ['kategori' => 'Pengumuman', 'judul' => 'Rapat Tahunan Anggota 2025 Resmi Dibuka',          'tanggal' => '28 Mar 2025', 'ringkasan' => 'Rapat tahunan yang dihadiri lebih dari 200 anggota aktif resmi dibuka oleh ketua organisasi pagi ini.',                              'slug' => 'rapat-tahunan-2025'],
-                ['kategori' => 'Kegiatan',   'judul' => 'Pelatihan Digital Marketing untuk Anggota Muda',   'tanggal' => '20 Mar 2025', 'ringkasan' => 'Sebanyak 45 anggota muda mengikuti pelatihan intensif digital marketing yang berlangsung selama dua hari.',                         'slug' => 'pelatihan-digital-marketing'],
-                ['kategori' => 'Prestasi',   'judul' => 'Nusantara Raih Penghargaan Organisasi Terbaik',    'tanggal' => '15 Mar 2025', 'ringkasan' => 'Penghargaan bergengsi tingkat nasional berhasil diraih sebagai bentuk pengakuan atas kontribusi organisasi selama dua dekade.',    'slug' => 'penghargaan-organisasi-terbaik'],
+                ['kategori' => 'Kegiatan', 'judul' => 'Seleksi Calon Paskibraka 2019',          'tanggal' => '4 Mei 2019', 'ringkasan' => 'Telah dilaksanakan rangkaian seleksi Calon Pasukan Pengibar Bendera Pusaka di Tingkat Kabupaten Sumedang selama 3 hari berturut, terdiri dari tes kesehatan, pbb, adiraga, dan lain-lain.',                              'img' => 'seleksi_apel.jpeg'],
+                ['kategori' => 'Pengumuman',   'judul' => 'Kunjungan PPI ke Bakesbangpol Sumedang',   'tanggal' => '13 Mei 2022', 'ringkasan' => 'Pengurus PPI Sumedang berkunjung ke Bakesbangpol Sumedang dalam rangka sosialisasi Perpres No 51 Tahun 2022 tentang program Pengibaran Bendera Pusaka .', 'img' => 'audiensi.jpeg'],
+                ['kategori' => 'Pengumuman',   'judul' => 'Audiensi dengan DPRD',    'tanggal' => '9 Jun 2022', 'ringkasan' => 'Audiensi kepada Wakil Ketua DPRD Kang Jajang Heryana sekaligus penasihat PPI Sumedang.',    'img' => 'audiensi1.jpeg'],
             ] as $artikel)
-            <a href="{{ route('berita.show', $artikel['slug']) }}" class="group bg-white rounded-2xl border border-stone-100 overflow-hidden hover:shadow-lg hover:shadow-stone-100 hover:-translate-y-0.5 transition-all duration-200">
+            <a href="{{ route('berita.show', $artikel['img']) }}" class="group bg-white rounded-2xl border border-stone-100 overflow-hidden hover:shadow-lg hover:shadow-stone-100 hover:-translate-y-0.5 transition-all duration-200">
                 <div class="h-44 bg-gradient-to-br from-stone-100 to-emerald-50 flex items-center justify-center">
-                    <svg class="w-10 h-10 text-stone-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5M4.5 3h15a.75.75 0 01.75.75v15.75a.75.75 0 01-.75.75H4.5a.75.75 0 01-.75-.75V3.75A.75.75 0 014.5 3z"/></svg>
+                      <img src="{{ asset('images/' . $artikel['img']) }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                 </div>
                 <div class="p-5">
                     <span class="text-[10px] font-semibold tracking-widest uppercase text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">{{ $artikel['kategori'] }}</span>
@@ -97,7 +97,7 @@
                         <span class="italic text-emerald-500">melayani ribuan anggota.</span>
                     </h2>
                     <p class="text-stone-500 leading-relaxed mb-6">
-                        Nusantara adalah organisasi profesional yang berkomitmen untuk mengembangkan potensi anggota melalui program pelatihan, jaringan, dan kolaborasi lintas daerah.
+                        Purna Paskibraka Indonesia (disingkat PPI) adalah organisasi resmi yang menghimpun para alumni anggota Pasukan Pengibar Bendera Pusaka (Paskibraka) di Indonesia, salah satunya di Sumedang. Organisasi ini dibentuk sebagai wadah bagi mantan anggota Paskibraka untuk melanjutkan peran serta mereka dalam menanamkan nilai-nilai nasionalisme, disiplin, dan pengabdian kepada bangsa.
                     </p>
                     <div class="grid grid-cols-2 gap-4 mb-8">
                         @foreach ([
@@ -145,15 +145,15 @@
 
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-10">
             @foreach ([
-                ['label' => 'Rapat Tahunan 2025',   'bg' => 'from-emerald-50 to-stone-100'],
-                ['label' => 'Pelatihan Digital',     'bg' => 'from-stone-100 to-emerald-50'],
-                ['label' => 'Bakti Sosial Maret',    'bg' => 'from-emerald-50 to-emerald-100'],
-                ['label' => 'Workshop Kepemimpinan', 'bg' => 'from-stone-100 to-stone-200'],
-                ['label' => 'Halal Bihalal 2024',    'bg' => 'from-emerald-100 to-stone-100'],
-                ['label' => 'Seminar Nasional',      'bg' => 'from-stone-50 to-emerald-50'],
+                ['label' => 'Audiensi dengan Wakil Ketua DPRD',   'img' => 'audiensi1.jpeg'],
+                ['label' => 'Apel Pagi',     'img' => 'seleksi_apel.jpeg'],
+                ['label' => 'Persiapan Seleksi',    'img' => 'seleksi_brifing.jpeg'],
+                ['label' => 'Seleksi', 'img' => 'seleksi.jpeg'],
+                ['label' => 'Raker PPI',    'img' => 'naon.jpeg'],
+                ['label' => 'Audiensi dengan BNNK',      'img' => 'audiensi.jpeg'],
             ] as $dok)
-            <a href="{{ route('dokumentasi') }}" class="group relative h-40 md:h-48 rounded-2xl overflow-hidden bg-gradient-to-br {{ $dok['bg'] }} flex items-center justify-center hover:opacity-90 transition-opacity">
-                <svg class="w-8 h-8 text-stone-200 group-hover:scale-110 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5M4.5 3h15a.75.75 0 01.75.75v15.75a.75.75 0 01-.75.75H4.5a.75.75 0 01-.75-.75V3.75A.75.75 0 014.5 3z"/></svg>
+            <a href="{{ route('dokumentasi') }}" class="group relative h-40 md:h-48 rounded-2xl overflow-hidden bg-gradient-to-br {{ $dok['img'] }} flex items-center justify-center hover:opacity-90 transition-opacity">
+                <img src="{{ asset('images/' . $dok['img']) }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out">
                 <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/25 to-transparent p-3">
                     <p class="text-white text-xs font-medium">{{ $dok['label'] }}</p>
                 </div>
@@ -204,9 +204,7 @@
                 <a href="https://wa.me/628XXXXXXXXXX"
                 target="_blank"
                 class="inline-flex items-center gap-2 bg-white text-primary font-semibold text-sm px-6 py-3 rounded-xl hover:bg-white/90 transition-all shadow-md shadow-black/10">
-
                     Hubungi via WhatsApp
-
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h18M3 12h18M3 19h18"/>
                     </svg>

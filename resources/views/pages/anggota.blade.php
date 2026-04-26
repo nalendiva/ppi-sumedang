@@ -17,13 +17,13 @@
                     <p class="text-sm text-stone-400 mt-1">Cek apakah seseorang terdaftar sebagai anggota aktif organisasi.</p>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
-                    <span class="inline-flex items-center gap-1.5 bg-green-50 border border-green-100 text-green-700 text-xs font-semibold px-3 py-1.5 rounded-full">
+                    <span id="badgeAktif" class="inline-flex items-center gap-1.5 bg-green-50 border border-green-100 text-green-700 text-xs font-semibold px-3 py-1.5 rounded-full">
                         <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                        2 Aktif
+                        
                     </span>
-                    <span class="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full">
+                    <span id="badgeAlumni" class="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                        1 Alumni
+                        
                     </span>
                 </div>
             </div>
@@ -40,12 +40,13 @@
                         </svg>
                     </span>
                     <input
+                        id="inputSearch"
                         type="text"
                         placeholder="Masukkan nama lengkap anggota..."
                         class="w-full bg-stone-50 border border-stone-200 rounded-xl pl-11 pr-4 py-3.5 text-sm text-stone-800 placeholder-stone-300 outline-none transition-all focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/10 focus:bg-white"
                     >
                 </div>
-                <button class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-white font-semibold text-sm px-6 py-3 rounded-xl transition-all shadow-md shadow-emerald-200/60 shrink-0">
+                <button id="searchBtn" class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-white font-semibold text-sm px-6 py-3 rounded-xl transition-all shadow-md shadow-emerald-200/60 shrink-0">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0016.803 15.803z"/>
                     </svg>
@@ -63,32 +64,30 @@
         ============================================================ --}}
 
         {{-- STATE: Ditemukan & Aktif --}}
-        <div class="flex items-start gap-3 bg-green-50 border border-green-100 rounded-2xl p-4 mb-5">
+        <div id="alertFound" style="display:none" class="flex items-start gap-3 bg-green-50 border border-green-100 rounded-2xl p-4 mb-5">
             <div class="w-9 h-9 bg-green-100 rounded-xl flex items-center justify-center shrink-0">
                 <svg class="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
             <div class="flex-1">
                 <p class="text-sm font-semibold text-green-800">Anggota ditemukan!</p>
-                <p class="text-xs text-green-600 mt-0.5 leading-relaxed">
-                    <span class="font-semibold">Budi Santoso</span> terdaftar sebagai anggota <span class="font-semibold">aktif</span> angkatan 2020.
-                </p>
+                <p id="alertFoundMsg" class="text-xs text-green-600 mt-0.5 leading-relaxed"></p>
             </div>
             <button class="text-green-300 hover:text-green-500 transition-colors mt-0.5 shrink-0">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
 
-        {{-- STATE: Tidak ditemukan (hapus komentar jika dibutuhkan)
-        <div class="flex items-start gap-3 bg-red-50 border border-red-100 rounded-2xl p-4 mb-5">
+        {{-- STATE: Tidak ditemukan (hapus komentar jika dibutuhkan) --}}
+        <div id="alertNotFound" style="display:none" class="flex items-start gap-3 bg-red-50 border border-red-100 rounded-2xl p-4 mb-5">
             <div class="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center shrink-0">
                 <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
             </div>
             <div>
                 <p class="text-sm font-semibold text-red-700">Anggota tidak ditemukan</p>
-                <p class="text-xs text-red-500 mt-0.5">"Nama yang dicari" tidak terdaftar dalam database anggota organisasi.</p>
+                <p id="alertNotFoundMsg" class="text-xs text-red-500 mt-0.5"></p>
             </div>
         </div>
-        --}}
+        
 
         {{-- Tabel --}}
         <div class="bg-white rounded-2xl border border-stone-100 overflow-hidden shadow-sm shadow-stone-100/50">
@@ -97,100 +96,28 @@
             <div class="flex items-center justify-between px-6 py-4 border-b border-stone-50">
                 <p class="text-sm font-semibold text-stone-700">Daftar Anggota</p>
                 <div class="flex items-center gap-2">
-                    <select class="text-xs text-stone-500 bg-stone-50 border border-stone-200 rounded-lg px-3 py-1.5 outline-none focus:border-emerald-400 transition-colors cursor-pointer">
-                        <option>Semua Status</option>
-                        <option>Aktif</option>
-                        <option>Alumni</option>
-                        <option>Tidak Aktif</option>
+                    <select id="filterStatus" class="text-xs text-stone-500 bg-stone-50 border border-stone-200 rounded-lg px-3 py-1.5 outline-none focus:border-emerald-400 transition-colors cursor-pointer">
+                        <option value="">Semua Status</option>
+                        <option value="aktif">Aktif</option>
+                        <option value="alumni">Alumni</option>
+                        <option value="tidak_aktif">Tidak Aktif</option>
                     </select>
-                    <span class="text-xs text-stone-400 bg-stone-50 border border-stone-100 rounded-lg px-3 py-1.5">
-                        3 anggota
+                    <span id="countBadge" class="text-xs text-stone-400 bg-stone-50 border border-stone-100 rounded-lg px-3 py-1.5">
+                    
                     </span>
                 </div>
             </div>
 
-            <x-table :headers="['Anggota', 'Angkatan', 'Status', '']">
-
-                {{-- Row 1 — highlighted karena hasil pencarian --}}
-                <tr class="bg-emerald-50/30 hover:bg-emerald-50/60 transition-colors">
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-700 text-xs font-bold shrink-0">
-                                BS
-                            </div>
-                            <div>
-                                <p class="font-semibold text-stone-800 text-sm">Budi Santoso</p>
-                                <p class="text-xs text-stone-400">NIM · 20001</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 text-stone-500 text-sm">2020</td>
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center gap-1.5 bg-green-50 text-green-700 border border-green-100 px-3 py-1 text-xs font-semibold rounded-full">
-                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>Aktif
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                        <button class="text-xs font-semibold text-emerald-600 hover:text-emerald-500 transition-colors">Detail →</button>
-                    </td>
-                </tr>
-
-                {{-- Row 2 --}}
-                <tr class="hover:bg-stone-50/60 transition-colors">
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-stone-100 flex items-center justify-center text-stone-500 text-xs font-bold shrink-0">
-                                SR
-                            </div>
-                            <div>
-                                <p class="font-semibold text-stone-800 text-sm">Siti Rahayu</p>
-                                <p class="text-xs text-stone-400">NIM · 21045</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 text-stone-500 text-sm">2021</td>
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-100 px-3 py-1 text-xs font-semibold rounded-full">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>Alumni
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                        <button class="text-xs font-semibold text-emerald-600 hover:text-emerald-500 transition-colors">Detail →</button>
-                    </td>
-                </tr>
-
-                {{-- Row 3 --}}
-                <tr class="hover:bg-stone-50/60 transition-colors">
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-stone-100 flex items-center justify-center text-stone-500 text-xs font-bold shrink-0">
-                                AP
-                            </div>
-                            <div>
-                                <p class="font-semibold text-stone-800 text-sm">Andi Pratama</p>
-                                <p class="text-xs text-stone-400">NIM · 19088</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 text-stone-500 text-sm">2019</td>
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center gap-1.5 bg-green-50 text-green-700 border border-green-100 px-3 py-1 text-xs font-semibold rounded-full">
-                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>Aktif
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                        <button class="text-xs font-semibold text-emerald-600 hover:text-emerald-500 transition-colors">Detail →</button>
-                    </td>
-                </tr>
-
+            <x-table :headers="['Anggota', 'Angkatan', 'Asal Sekolah', 'Pendidikan', '']">
+                
             </x-table>
 
             {{-- Pagination --}}
             <div class="px-6 py-4 border-t border-stone-50 flex items-center justify-between">
                 <p class="text-xs text-stone-400">
-                    Menampilkan <span class="font-semibold text-stone-600">1–3</span> dari <span class="font-semibold text-stone-600">3</span> anggota
+                    Menampilkan <span id="pgShow" class="font-semibold text-stone-600">1–3</span> dari <span id="pgTotal" class="font-semibold text-stone-600">3</span> anggota
                 </p>
-                <div class="flex items-center gap-1">
+                <div id="pageBtns" class="flex items-center gap-1">
                     <button disabled class="w-7 h-7 rounded-lg border border-stone-100 text-stone-300 flex items-center justify-center">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
                     </button>
@@ -205,3 +132,198 @@
     </div>
 
 </x-layouts.app>
+
+<script>
+    const BASE_URL = "/anggota";
+    const PER_PAGE = 10;
+
+    let allData      = [];
+    let filteredData = [];
+    let currentPage  = 1;
+
+    function getInitial(nama) {
+        if (!nama) return '?';
+        return nama.trim().split(/\s+/).slice(0, 2).map(n => n[0]).join('').toUpperCase();
+    }
+
+    function closeAlert(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    function showAlert(type, msg) {
+        closeAlert('alertFound');
+        closeAlert('alertNotFound');
+        if (type === 'found') {
+            document.getElementById('alertFoundMsg').innerHTML = msg;
+            document.getElementById('alertFound').style.display = 'flex';
+        } else {
+            document.getElementById('alertNotFoundMsg').textContent = msg;
+            document.getElementById('alertNotFound').style.display = 'flex';
+        }
+    }
+
+    function renderTable(data) {
+        const tbody = document.getElementById('anggotaTableBody');
+        if (!data || data.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="text-center py-8 text-stone-400 text-sm">
+                        Data tidak ditemukan
+                    </td>
+                </tr>`;
+            return;
+        }
+        const start    = (currentPage - 1) * PER_PAGE;
+        const pageData = data.slice(start, start + PER_PAGE);
+        tbody.innerHTML = pageData.map(item => `
+            <tr class="hover:bg-stone-50 transition">
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-stone-100 flex items-center justify-center text-xs font-bold text-stone-500 shrink-0">
+                            ${getInitial(item.nama)}
+                        </div>
+                        <div>
+                            <p class="font-semibold text-sm text-stone-800">${item.nama ?? '—'}</p>
+                            <p class="text-xs text-stone-400">NRM · ${item.nrm ?? '—'}</p>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-stone-600">${item.angkatan ?? '—'}</td>
+                <td class="px-6 py-4 text-sm text-stone-500">${item.asal_sekolah ?? '—'}</td>
+                <td class="px-6 py-4 text-sm text-stone-500">${item.pendidikan ?? '—'}</td>
+            </tr>
+        `).join('');
+    }
+
+    function renderPagination(total) {
+        const totalPages = Math.ceil(total / PER_PAGE) || 1;
+        const start = total === 0 ? 0 : (currentPage - 1) * PER_PAGE + 1;
+        const end   = Math.min(currentPage * PER_PAGE, total);
+
+        document.getElementById('pgShow').textContent   = `${start}–${end}`;
+        document.getElementById('pgTotal').textContent  = total;
+        document.getElementById('countBadge').textContent = `${total} anggota`;
+
+        const container   = document.getElementById('pageBtns');
+        const prevDisabled = currentPage === 1 ? 'disabled' : '';
+        const nextDisabled = currentPage >= totalPages ? 'disabled' : '';
+
+        let btns = `
+            <button ${prevDisabled} onclick="goPage(${currentPage - 1})"
+                class="w-7 h-7 rounded-lg border border-stone-100 text-stone-300 flex items-center justify-center disabled:opacity-40">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+                </svg>
+            </button>`;
+
+        for (let i = 1; i <= totalPages; i++) {
+            const active = i === currentPage
+                ? 'bg-emerald-500 text-white border-emerald-500'
+                : 'border-stone-100 text-stone-500 hover:bg-stone-50';
+            btns += `<button onclick="goPage(${i})" class="w-7 h-7 rounded-lg border text-xs font-bold ${active}">${i}</button>`;
+        }
+
+        btns += `
+            <button ${nextDisabled} onclick="goPage(${currentPage + 1})"
+                class="w-7 h-7 rounded-lg border border-stone-100 text-stone-300 flex items-center justify-center disabled:opacity-40">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+                </svg>
+            </button>`;
+
+        container.innerHTML = btns;
+    }
+
+    function goPage(page) {
+        const totalPages = Math.ceil(filteredData.length / PER_PAGE) || 1;
+        if (page < 1 || page > totalPages) return;
+        currentPage = page;
+        renderTable(filteredData);
+        renderPagination(filteredData.length);
+    }
+
+    function applyFilter() {
+        const status = document.getElementById('filterStatus').value.toLowerCase();
+        filteredData = status
+            ? allData.filter(d => (d.status ?? '').toLowerCase() === status)
+            : [...allData];
+        currentPage = 1;
+        renderTable(filteredData);
+        renderPagination(filteredData.length);
+    }
+
+    function updateBadges(data) {
+        const aktif  = data.filter(d => (d.status ?? '').toLowerCase() === 'aktif').length;
+        const alumni = data.filter(d => (d.status ?? '').toLowerCase() === 'alumni').length;
+        document.getElementById('badgeAktif').textContent  = `${aktif} Aktif`;
+        document.getElementById('badgeAlumni').textContent = `${alumni} Alumni`;
+    }
+
+    async function fetchAnggota() {
+        try {
+            const res    = await fetch(BASE_URL);
+            const result = await res.json();
+            // console.log('API response:', result);
+            allData      = result.data ?? [];
+            filteredData = [...allData];
+            updateBadges(allData);
+            currentPage  = 1;
+            applyFilter();
+        } catch (err) {
+            console.error('Fetch error:', err);
+            document.getElementById('anggotaTableBody').innerHTML = `
+                <tr><td colspan="4" class="text-center py-8 text-stone-400 text-sm">
+                    Gagal memuat data. Periksa koneksi API.
+                </td></tr>`;
+        }
+    }
+
+    async function searchAnggota(keyword) {
+        if (!keyword.trim()) {
+            closeAlert('alertFound');
+            closeAlert('alertNotFound');
+            fetchAnggota();
+            return;
+        }
+        try {
+            const res    = await fetch(`${BASE_URL}/search?nama=${encodeURIComponent(keyword)}`);
+            const result = await res.json();
+            const data   = result.data ?? [];
+
+            allData      = data;
+            filteredData = [...data];
+            currentPage  = 1;
+            renderTable(filteredData);
+            renderPagination(filteredData.length);
+
+            if (data.length > 0) {
+                const first    = data[0];
+                const status   = first.status ? ` sebagai anggota <strong>${first.status}</strong>` : '';
+                const angkatan = first.angkatan ? ` angkatan ${first.angkatan}` : '';
+                showAlert('found', `<strong>${first.nama}</strong> terdaftar${status}${angkatan}.`);
+            } else {
+                showAlert('notfound', `"${keyword}" tidak terdaftar dalam database anggota organisasi.`);
+            }
+        } catch (err) {
+            console.error('Search error:', err);
+        }
+    }
+
+    document.getElementById('searchBtn').addEventListener('click', () => {
+        searchAnggota(document.getElementById('inputSearch').value);
+    });
+
+    document.getElementById('inputSearch').addEventListener('keypress', e => {
+        if (e.key === 'Enter') searchAnggota(e.target.value);
+    });
+
+    document.getElementById('inputSearch').addEventListener('input', e => {
+        if (e.target.value === '') {
+            closeAlert('alertFound');
+            closeAlert('alertNotFound');
+            fetchAnggota();
+        }
+    });
+
+    fetchAnggota();
+</script>

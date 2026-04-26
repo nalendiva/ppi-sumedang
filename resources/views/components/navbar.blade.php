@@ -4,8 +4,8 @@
 
 @php
 $navLinks = [
-    ['label' => 'Beranda',  'route' => '/',        'name' => 'home'],
-    ['label' => 'Anggota',  'route' => '/anggota', 'name' => 'anggota'],
+    ['label' => 'Beranda',  'route' => '/page/home',        'name' => 'home'],
+    ['label' => 'Anggota',  'route' => '/page/anggota', 'name' => 'anggota'],
 ];
 @endphp
 
@@ -13,7 +13,7 @@ $navLinks = [
     <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
 
         {{-- Logo --}}
-        <a href="/" class="flex items-center gap-2.5 shrink-0 group">
+        <a href="/page/home" class="flex items-center gap-2.5 shrink-0 group">
             <img 
                 src="{{ asset('images/Logo PPI.png') }}" 
                 alt="Logo PPI"
