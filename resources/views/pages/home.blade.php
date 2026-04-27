@@ -34,8 +34,13 @@
         {{-- Stat strip --}}
         <div class="border-t border-stone-100 bg-white/60 backdrop-blur-sm">
             <div class="max-w-7xl mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="text-center">
+                            <p id="totalAnggota" class="text-2xl font-bold text-stone-800" style="font-family: 'DM Serif Display', serif;">
+                                ...
+                            </p>
+                            <p class="text-xs text-stone-400 mt-0.5">Total Anggota</p>
+                        </div>
                 @foreach ([
-                    ['label' => 'Total Anggota', 'value' => '800+'],
                     ['label' => 'Artikel Berita', 'value' => '56'],
                     ['label' => 'Dokumentasi',    'value' => '120+'],
                     ['label' => 'Mitra Aktif',    'value' => '18'],
@@ -217,3 +222,23 @@
     </section>
 
 </x-layouts.app>
+
+<script>
+async function loadTotalAnggota() {
+    try {
+        const res = await fetch('/anggota');
+        const json = await res.json();
+
+        if (!json.success) throw new Error();
+
+        const total = json.data.length;
+
+        document.getElementById('totalAnggota').innerText = total ;
+    } catch (e) {
+        console.error(e);
+        document.getElementById('totalAnggota').innerText = '0';
+    }
+}
+
+loadTotalAnggota();
+</script>

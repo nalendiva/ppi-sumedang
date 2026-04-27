@@ -273,7 +273,7 @@
     ═══════════════════════════════ --}}
     <script>
     // ── Config ────────────────────────────────────────────────────
-    const API      = null;   // /admin/anggota
+    const API      = "/anggota";   // /admin/anggota
     const CSRF     = document.querySelector('meta[name=csrf-token]').content;
     const PER_PAGE = 10;
 
@@ -306,7 +306,7 @@
     // ── Fetch ──────────────────────────────────────────────────────
     async function load() {
         try {
-            const r = await fetch(API, { headers: { Accept: 'application/json', 'X-CSRF-TOKEN': CSRF } });
+            const r = await fetch(`${API}/indexAdmin`, { headers: { Accept: 'application/json', 'X-CSRF-TOKEN': CSRF } });
             const j = await r.json();
             allData = j.data ?? [];
             updateStats();
@@ -518,7 +518,7 @@
         };
 
         try {
-            const res = await fetch(mode === 'edit' ? `${API}/${id}` : API, {
+            const res = await fetch(mode === 'edit' ? `${API}/update/${id}` : `${API}/store`, {
                 method:  mode === 'edit' ? 'PUT' : 'POST',
                 headers: { 'Content-Type':'application/json', Accept:'application/json', 'X-CSRF-TOKEN':CSRF },
                 body: JSON.stringify(body),

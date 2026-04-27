@@ -156,7 +156,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         if (data.role === 'superadmin') {
             window.location.href = '/page/anggota';
         } else if (data.role === 'admin') {
-            window.location.href = '/page/berita';
+            window.location.href = '/page/anggota';
         } else {
             window.location.href = '/';
         }
