@@ -11,14 +11,32 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('anggota', function (Blueprint $table) {
-            //
-            $table->index('nrm');
-            $table->index('angkatan');
-            $table->index('nama');
-            $table->index('asal_sekolah');
-            $table->index('pendidikan');
-        });
+        if (Schema::hasTable('anggota')) {
+
+            Schema::table('anggota', function (Blueprint $table) {
+
+                if (Schema::hasColumn('anggota', 'nrm')) {
+                    $table->index('nrm');
+                }
+
+                if (Schema::hasColumn('anggota', 'angkatan')) {
+                    $table->index('angkatan');
+                }
+
+                if (Schema::hasColumn('anggota', 'nama')) {
+                    $table->index('nama');
+                }
+
+                if (Schema::hasColumn('anggota', 'asal_sekolah')) {
+                    $table->index('asal_sekolah');
+                }
+
+                if (Schema::hasColumn('anggota', 'pendidikan')) {
+                    $table->index('pendidikan');
+                }
+
+            });
+        }
     }
 
     /**
@@ -27,12 +45,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('anggota', function (Blueprint $table) {
-            //
+
             $table->dropIndex(['nrm']);
             $table->dropIndex(['angkatan']);
             $table->dropIndex(['nama']);
             $table->dropIndex(['asal_sekolah']);
             $table->dropIndex(['pendidikan']);
+
         });
     }
 };
