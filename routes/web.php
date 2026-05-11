@@ -6,7 +6,7 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
-    return redirect('/page/home');
+    return 'WEB BERHASIL';
 });
 
 // Route::get('/', function () {
