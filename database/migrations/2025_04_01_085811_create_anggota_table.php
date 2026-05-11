@@ -11,7 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('anggota', function (Blueprint $table) {
+        if (!Schema::hasTable('anggota')){
+            Schema::create('anggota', function (Blueprint $table) {
             $table->id();
             $table->integer('no_urut')->nullable();
             $table->string('nama')->nullable();
@@ -27,6 +28,8 @@ return new class extends Migration
             $table->string('pekerjaan')->nullable();
             $table->timestamps();
         });
+        }
+        
     }
 
     /**
