@@ -5,6 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AdminController;
 
+Route::get('/', function () {
+    return redirect('/page/home');
+});
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -28,8 +31,6 @@ Route::prefix('page')->group(function () {
     Route::get('/mitra', fn() => view('pages.mitra'))->name('mitra');
     Route::get('/login', fn() => view('pages.auth.login'))->name('login');
 });
-
-
 
 // Helmi
 Route::post('/login', [AuthController::class, 'login']);
